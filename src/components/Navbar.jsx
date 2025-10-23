@@ -69,7 +69,7 @@ const Navbar = React.memo(() => {
               aria-label={`Cambiar a tema ${
                 theme === "dark" ? "claro" : "oscuro"
               }`}
-              className="p-3 rounded-full bg-white text-blue-600 dark:bg-gray-700 dark:text-yellow-400 hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="p-3 rounded-full bg-white text-blue-600 dark:bg-gray-700 dark:text-yellow-400 hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-blue-300 dark:border-yellow-500"
             >
               <span className="text-xl">
                 {theme === "dark" ? "☀️" : "🌙"}
