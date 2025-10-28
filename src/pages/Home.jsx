@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import CharacterCard from "../components/CharacterCard";
 import Loader from "../components/Loader";
-import PokemonCard from "../components/PokemonCard";
 
 export default function Home() {
-  const [pokemonList, setPokemonList] = useState([]);
+  const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
@@ -11,56 +11,66 @@ export default function Home() {
 
   const initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0";
 
-  const fetchPage = useCallback(async (url, append) => {
+  const fetchPage = useCallback(async (url, append = false) => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     try {
-      if (append) {
-        setLoadingMore(true);
-      } else {
-        setLoading(true);
-      }
+      append ? setLoadingMore(true) : setLoading(true);
       setError(null);
 
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("No se pudieron cargar los Pokémon");
-      const data = await response.json();
+      const res = await fetch(url, { signal });
+      if (!res.ok) throw new Error(`API responded ${res.status}`);
+      const data = await res.json();
 
       setNextUrl(data.next || null);
 
       const detailed = await Promise.all(
-        (data.results || []).map(async (pokemon) => {
-          const resDetail = await fetch(pokemon.url);
-          if (!resDetail.ok) throw new Error("No se pudieron cargar los detalles");
-          return resDetail.json();
+        (data.results || []).map(async (item) => {
+          try {
+            const r = await fetch(item.url, { signal });
+            if (!r.ok) throw new Error();
+            return await r.json();
+          } catch {
+            return { name: item.name, url: item.url };
+          }
         })
       );
 
-      setPokemonList((prev) => (append ? [...prev, ...detailed] : detailed));
+      setList((prev) => (append ? [...prev, ...detailed] : detailed));
     } catch (err) {
-      setError(err.message);
-      if (!append) {
-        setPokemonList([]);
-      }
+      if (err.name === "AbortError") return;
+      setError(
+        err.message.includes("Failed to fetch")
+          ? "No se pudo conectar con la API. Revisa la red o CORS."
+          : err.message
+      );
+      if (!append) setList([]);
     } finally {
-      if (append) {
-        setLoadingMore(false);
-      } else {
-        setLoading(false);
-      }
+      append ? setLoadingMore(false) : setLoading(false);
     }
-  }, []);
 
-  const handleLoadMore = useCallback(() => {
-    if (!nextUrl || loadingMore) return;
-    fetchPage(nextUrl, true);
-  }, [nextUrl, loadingMore, fetchPage]);
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     document.title = "Pokédex | PokeSearch";
-    fetchPage(initialUrl, false);
+    const cleanup = fetchPage(initialUrl, false);
+    return () => {
+      if (typeof cleanup === "function") cleanup();
+    };
   }, [fetchPage]);
 
   if (loading) return <Loader />;
-  if (error) return <div className="text-red-600 dark:text-red-400 text-center p-8 text-xl font-medium">{error}</div>;
+  if (error)
+    return (
+      <div className="text-red-600 dark:text-red-400 text-center p-8 text-xl font-medium">
+        {error}
+      </div>
+    );
+
+  if (!Array.isArray(list) || list.length === 0)
+    return <p className="text-center text-gray-600 dark:text-gray-300">No se encontraron resultados.</p>;
 
   return (
     <main className="px-4 py-8">
@@ -69,23 +79,23 @@ export default function Home() {
       </h1>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
-        {pokemonList.map((p) => (
-          <PokemonCard key={p.name} pokemon={p} />
+        {list.map((p, i) => (
+          <CharacterCard key={p.id ?? p.name ?? i} pokemon={p} />
         ))}
       </div>
 
       <div className="flex justify-center mt-12">
         {nextUrl && (
           <button
-            onClick={handleLoadMore}
+            onClick={() => fetchPage(nextUrl, true)}
             disabled={loadingMore}
             className={`px-8 py-3 rounded-full text-white font-semibold shadow-md transition-all duration-300
-              ${loadingMore 
-                ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed" 
+              ${loadingMore
+                ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
                 : "bg-blue-600 hover:bg-blue-700 dark:bg-yellow-500 dark:hover:bg-yellow-600"
               }`}
           >
-            {loadingMore ? "Cargando..." : "¡Trae más Pokémon!"}
+            {loadingMore ? "Cargando..." : "Cargar más"}
           </button>
         )}
       </div>

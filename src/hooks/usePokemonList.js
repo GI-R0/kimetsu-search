@@ -9,11 +9,7 @@ export function usePokemonList(initialUrl = "https://pokeapi.co/api/v2/pokemon?l
 
   const fetchPage = async (url, append = false) => {
     try {
-      if (append) {
-        setLoadingMore(true);
-      } else {
-        setLoading(true);
-      }
+      append ? setLoadingMore(true) : setLoading(true);
       setError(null);
 
       const response = await fetch(url);
@@ -33,34 +29,19 @@ export function usePokemonList(initialUrl = "https://pokeapi.co/api/v2/pokemon?l
       setPokemonList((prev) => (append ? [...prev, ...detailed] : detailed));
     } catch (err) {
       setError(err.message);
-      if (!append) {
-        setPokemonList([]);
-      }
+      if (!append) setPokemonList([]);
     } finally {
-      if (append) {
-        setLoadingMore(false);
-      } else {
-        setLoading(false);
-      }
+      append ? setLoadingMore(false) : setLoading(false);
     }
   };
 
   const loadMore = () => {
-    if (nextUrl && !loadingMore) {
-      fetchPage(nextUrl, true);
-    }
+    if (nextUrl && !loadingMore) fetchPage(nextUrl, true);
   };
 
   useEffect(() => {
     fetchPage(initialUrl, false);
   }, [initialUrl]);
 
-  return {
-    pokemonList,
-    loading,
-    loadingMore,
-    error,
-    nextUrl,
-    loadMore
-  };
+  return { pokemonList, loading, loadingMore, error, nextUrl, loadMore };
 }

@@ -8,7 +8,7 @@ export default function About() {
         Este proyecto educativo utiliza la API pública de Pokémon (PokeAPI)
         para mostrar información sobre tus Pokémon favoritos.
         <br />
-        Desarrollado por giro 🧩 con React + TailwindCSS.
+        Desarrollado 🧩 con React + TailwindCSS.
       </p>
     </section>
   );

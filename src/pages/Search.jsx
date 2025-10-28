@@ -45,7 +45,7 @@ export default function Search() {
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
-        {results.map((pokemon) => (
+        {results?.map((pokemon) => (
           <PokemonCard key={pokemon.id} pokemon={pokemon} />
         ))}
       </div>

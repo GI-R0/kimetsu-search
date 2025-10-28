@@ -12,26 +12,35 @@ export function usePokemon(name) {
       return;
     }
 
-    const normalizedName = name.toLowerCase().trim();
-    
-    setLoading(true);
-    setError(null);
+    const controller = new AbortController();
+    const signal = controller.signal;
 
-    fetch(`https://pokeapi.co/api/v2/pokemon/${normalizedName}`)
-      .then((res) => {
+    const fetchPokemon = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase().trim()}`,
+          { signal }
+        );
+
         if (!res.ok) throw new Error("Ese Pokémon no existe o se escondió");
-        return res.json();
-      })
-      .then((pokemon) => {
+
+        const pokemon = await res.json();
         setData([pokemon]);
-      })
-      .catch((err) => {
+      } catch (err) {
+        if (err.name === "AbortError") return;
         setError(err.message);
         setData([]);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchPokemon();
+
+    return () => controller.abort();
   }, [name]);
 
   return { data, loading, error };

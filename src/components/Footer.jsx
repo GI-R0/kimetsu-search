@@ -1,22 +1,23 @@
 import React from "react";
-import PikachuLogo from "../assets/pokemon.png";
+import pokemon from "../assets/pokemon.png";
 
 const Footer = React.memo(() => {
   return (
     <footer
       className="bg-gray-800 dark:bg-gray-900 text-white py-6 mt-12 border-t border-gray-700 dark:border-gray-800 transition-colors duration-300"
       role="contentinfo"
-      aria-label="Información del sitio"
+      aria-label="Pie de página del sitio"
     >
       <div className="flex flex-col items-center justify-center gap-3 max-w-5xl mx-auto px-4">
         <img
-          src={PikachuLogo}
-          alt="Logo de PokeSearch con Pikachu"
-          className="w-12 h-12 drop-shadow-md"
+          src={pokemon}
+          alt=""
+          aria-hidden="true"
+          className="h-12 w-auto object-contain"
           loading="lazy"
-          decoding="async"
+          width="48"
+          height="48"
         />
-
         <p className="text-sm text-center text-gray-300 dark:text-gray-400">
           PokeSearch © {new Date().getFullYear()} — Proyecto educativo con{" "}
           <a
@@ -34,4 +35,3 @@ const Footer = React.memo(() => {
 });
 
 export default Footer;
-

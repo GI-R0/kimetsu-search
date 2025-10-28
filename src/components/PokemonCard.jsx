@@ -1,6 +1,6 @@
 import React from "react";
-import { capitalize } from "../utils/formatText"; // ✅ asegúrate de tener este archivo en /src/utils/formatText.js
-import Loader from "./Loader"; // ✅ usamos tu loader reutilizable
+import { capitalize } from "../utils/formatText";
+import Loader from "./Loader";
 
 const PokemonCard = React.memo(({ pokemon }) => {
   const [details, setDetails] = React.useState(null);
@@ -20,7 +20,6 @@ const PokemonCard = React.memo(({ pokemon }) => {
       }
     }
 
-    // si ya tiene detalles, no vuelve a pedirlos
     if (pokemon.id && pokemon.sprites) {
       setDetails(pokemon);
     } else {
@@ -28,7 +27,6 @@ const PokemonCard = React.memo(({ pokemon }) => {
     }
   }, [pokemon]);
 
-  // 🔴 error de carga
   if (error) {
     return (
       <div
@@ -41,12 +39,8 @@ const PokemonCard = React.memo(({ pokemon }) => {
     );
   }
 
-  // 🟡 cargando datos
-  if (!details) {
-    return <Loader />; // ✅ usamos tu componente Loader reutilizable
-  }
+  if (!details) return <Loader />;
 
-  // 🟢 render del Pokémon
   return (
     <div
       className="border border-gray-200 p-4 rounded-xl shadow-lg flex flex-col items-center bg-white dark:bg-gray-800 text-gray-800 dark:text-white hover:shadow-2xl transition duration-300 transform hover:scale-[1.02]"
@@ -69,7 +63,7 @@ const PokemonCard = React.memo(({ pokemon }) => {
       </p>
 
       <div className="flex gap-2 justify-center flex-wrap">
-        {details.types.map((t) => (
+        {details.types?.map((t) => (
           <span
             key={t.type.name}
             className="px-2 py-1 text-xs rounded-full font-semibold bg-blue-100 text-blue-600 dark:bg-blue-700 dark:text-blue-100"
