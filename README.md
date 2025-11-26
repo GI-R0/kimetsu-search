@@ -21,7 +21,7 @@ Aplicación de búsqueda de Pokémon con **React**, **TailwindCSS** y **PokeAPI*
 
 ## 🚀 Instalación
 
-````bash
+```bash
 # Clonar e instalar
 git clone <tu-repo-url>
 cd kimetsu-search
@@ -33,13 +33,17 @@ npm run dev
 # Producción
 npm run build
 npm run preview
+```
 
+## 🧠 Hooks Personalizados
+
+### `usePokemon(name)`
 
 Busca un Pokémon específico con manejo de carga y errores.
 
 ```jsx
 const { data, loading, error } = usePokemon("pikachu");
-````
+```
 
 ### `usePokemonList()`
 
