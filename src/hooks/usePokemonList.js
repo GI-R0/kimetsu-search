@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
-export function usePokemonList(initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0") {
+export function usePokemonList(
+  initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0"
+) {
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -13,7 +15,7 @@ export function usePokemonList(initialUrl = "https://pokeapi.co/api/v2/pokemon?l
       setError(null);
 
       const response = await fetch(url);
-      if (!response.ok) throw new Error("No se pudieron cargar los Pokémon");
+      if (!response.ok) throw new Error("Error al cargar los Pokemon");
       const data = await response.json();
 
       setNextUrl(data.next || null);
@@ -21,7 +23,7 @@ export function usePokemonList(initialUrl = "https://pokeapi.co/api/v2/pokemon?l
       const detailed = await Promise.all(
         (data.results || []).map(async (pokemon) => {
           const resDetail = await fetch(pokemon.url);
-          if (!resDetail.ok) throw new Error("No se pudieron cargar los detalles");
+          if (!resDetail.ok) throw new Error("Error al cargar detalles");
           return resDetail.json();
         })
       );

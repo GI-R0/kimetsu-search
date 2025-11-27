@@ -3,21 +3,14 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 import pikachu from "../assets/pikachu.png";
 
-const Navbar = React.memo(() => {
+function Navbar() {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav
-      className="bg-blue-600 dark:bg-gray-800 text-white shadow-md transition-colors duration-300"
-      aria-label="Barra de navegación principal"
-    >
+    <nav className="bg-blue-600 dark:bg-gray-800 text-white shadow-md transition-colors duration-300">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
-          <Link
-            to="/"
-            className="flex items-center gap-2"
-            aria-label="Ir a la página principal de PokeSearch"
-          >
+          <Link to="/" className="flex items-center gap-2">
             <img
               src={pikachu}
               alt="Ícono de Pikachu"
@@ -30,9 +23,6 @@ const Navbar = React.memo(() => {
           <div className="flex items-center gap-4">
             <button
               onClick={toggleTheme}
-              aria-label={`Cambiar al tema ${
-                theme === "dark" ? "claro" : "oscuro"
-              }`}
               className="p-3 rounded-full bg-white text-blue-600 dark:bg-gray-700 dark:text-yellow-400 hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-blue-300 dark:border-yellow-500"
             >
               <span className="text-xl">{theme === "dark" ? "☀️" : "🌙"}</span>
@@ -42,6 +32,6 @@ const Navbar = React.memo(() => {
       </div>
     </nav>
   );
-});
+}
 
 export default Navbar;

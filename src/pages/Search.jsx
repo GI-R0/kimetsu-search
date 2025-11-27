@@ -37,9 +37,6 @@ export default function Search() {
           })}
           placeholder="Nombre o ID del Pokémon"
           className="border p-3 rounded-lg flex-1"
-          aria-label="Buscar Pokémon por nombre o ID"
-          aria-invalid={errors.name ? "true" : "false"}
-          aria-describedby={errors.name ? "name-error" : undefined}
         />
         <button
           type="submit"

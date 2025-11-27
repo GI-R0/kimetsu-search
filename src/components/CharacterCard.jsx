@@ -2,11 +2,7 @@ import React from "react";
 
 export default function CharacterCard({ pokemon }) {
   const name = pokemon?.name ?? "Desconocido";
-  const img =
-    pokemon?.sprites?.other?.["official-artwork"]?.front_default ||
-    pokemon?.sprites?.front_default ||
-    pokemon?.image ||
-    "/pikachu.png"; 
+  const img = pokemon?.sprites?.front_default || "/pikachu.png";
 
   return (
     <article className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex flex-col items-center text-center">
@@ -18,7 +14,6 @@ export default function CharacterCard({ pokemon }) {
       />
       <h3 className="font-semibold text-lg capitalize">{name}</h3>
 
-      
       {Array.isArray(pokemon?.types) && (
         <div className="mt-2 flex gap-2 flex-wrap">
           {pokemon.types.map((t, i) => (
