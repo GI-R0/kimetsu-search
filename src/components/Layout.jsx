@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-function Layout({ children }) {
+const Layout = React.memo(({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-blue-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <Navbar />
@@ -44,6 +44,6 @@ function Layout({ children }) {
       <Footer />
     </div>
   );
-}
+});
 
 export default Layout;

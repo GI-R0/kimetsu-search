@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 import pikachu from "../assets/pikachu.png";
 
-function Navbar() {
+const Navbar = React.memo(() => {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -32,6 +32,6 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+});
 
 export default Navbar;

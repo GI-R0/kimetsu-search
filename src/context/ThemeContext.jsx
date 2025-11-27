@@ -27,9 +27,9 @@ export function ThemeProvider({ children }) {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
+  const value = React.useMemo(() => ({ theme, toggleTheme }), [theme]);
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
