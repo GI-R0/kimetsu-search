@@ -23,7 +23,7 @@ Aplicación de búsqueda de Pokémon con **React**, **TailwindCSS** y **PokeAPI*
 
 ```bash
 # Clonar e instalar
-git clone <tu-repo-url>
+git clone https://github.com/GI-R0/kimetsu-search.git
 cd kimetsu-search
 npm install
 
