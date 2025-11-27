@@ -4,12 +4,12 @@ Aplicación de búsqueda de Pokémon con **React**, **TailwindCSS** y **PokeAPI*
 
 ## 🌟 Características
 
-- 🔍 Búsqueda por nombre o ID
-- 📱 Completamente responsive
-- 🌓 Modo oscuro/claro persistente
-- 🎨 Interfaz moderna con animaciones
-- 📄 Paginación infinita
-- ♿ Accesible (ARIA + navegación por teclado)
+-  Búsqueda por nombre o ID
+-  Completamente responsive
+-  Modo oscuro/claro persistente
+-  Interfaz moderna con animaciones
+-  Paginación infinita
+-  Accesible (ARIA + navegación por teclado)
 
 ## 🛠️ Tecnologías
 
@@ -41,25 +41,17 @@ npm run preview
 
 Busca un Pokémon específico con manejo de carga y errores.
 
-```jsx
-const { data, loading, error } = usePokemon("pikachu");
-```
 
 ### `usePokemonList()`
 
 Lista paginada de Pokémon con función `loadMore()`.
 
-```jsx
-const { pokemonList, loading, loadMore } = usePokemonList();
-```
+
 
 ### `useTheme()`
 
 Gestión del tema claro/oscuro.
 
-```jsx
-const { theme, toggleTheme } = useTheme();
-```
 
 ## 🌐 API
 
