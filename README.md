@@ -1,58 +1,53 @@
-# ⚡ PokeSearch
+# PokeSearch
 
-Aplicación de búsqueda de Pokémon con **React**, **CSS** y **PokeAPI**.
+Una aplicación web para buscar y explorar Pokémon, construida con React y la PokeAPI.
 
-## 🌟 Características
+## Características
 
-- Búsqueda por nombre o ID
-- Completamente responsive
-- Modo oscuro/claro persistente
-- Interfaz moderna con animaciones
-- Paginación infinita
-- Accesible (ARIA + navegación por teclado)
+- Búsqueda de Pokémon por nombre o ID
+- Navegación por lista completa con carga paginada
+- Diseño responsive
+- Tema oscuro (por defecto)
+- Animaciones suaves en la interfaz
 
-## 🛠️ Tecnologías
+## Tecnologías
 
-- React 19 + React Router DOM 7
-- CSS
+- React 19
+- React Router DOM 7
+- CSS vanilla (sin frameworks)
 - Vite 7
 - PokeAPI
 
-## 🚀 Instalación
+## Instalación
 
 ```bash
-# Clonar e instalar
-git clone https://github.com/GI-R0
+# Clonar el repositorio
+git clone https://github.com/GI-R0/kimetsu-search.git
+cd kimetsu-search
+
+# Instalar dependencias
 npm install
 
-# Desarrollo
+# Iniciar servidor de desarrollo
 npm run dev
 
-# Producción
+# Construir para producción
 npm run build
 npm run preview
 ```
 
-## 🧠 Hooks Personalizados
+## Estructura del proyecto
 
-### `usePokemon(name)`
+El proyecto usa hooks personalizados para manejar la lógica de datos:
 
-Busca un Pokémon específico con manejo de carga y errores.
+- `usePokemon(name)` - Busca un Pokémon específico
+- `usePokemonList()` - Obtiene la lista de Pokémon con paginación
+- `useTheme()` - Maneja el cambio de tema
 
-### `usePokemonList()`
+## API
 
-Lista paginada de Pokémon con función `loadMore()`.
-
-### `useTheme()`
-
-Gestión del tema claro/oscuro.
-
-## 🌐 API
-
-Consume [PokeAPI](https://pokeapi.co/):
-
-Proyecto educativo de código abierto.
+Este proyecto consume datos de [PokeAPI](https://pokeapi.co/), una API pública y gratuita con información sobre Pokémon.
 
 ---
 
-**Desarrollado por GI-R0 usando React**
+Desarrollado por GI-R0
