@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import CharacterCard from "../components/CharacterCard";
+import PokemonCard from "../components/PokemonCard";
 import Loader from "../components/Loader";
 import { usePokemonList } from "../hooks/usePokemonList";
 
@@ -27,32 +27,41 @@ export default function Home() {
     );
 
   return (
-    <main className="px-4 py-8">
-      <h1 className="text-4xl font-extrabold text-center mb-10 text-gray-800 dark:text-white">
-        Pokédex
-      </h1>
+    <main>
+      <section
+        className="hero"
+        style={{
+          backgroundImage:
+            "url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png')",
+        }}
+      >
+        <div className="hero-content">
+          <h1 className="hero-title">Charizard</h1>
+          <p className="hero-desc">
+            Escupe fuego lo suficientemente caliente como para derretir rocas.
+            Conocido por causar incendios forestales sin intención.
+          </p>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
-        {pokemonList.map((p, i) => (
-          <CharacterCard key={p.id ?? p.name ?? i} pokemon={p} />
-        ))}
-      </div>
+      <div className="px-8 pb-12">
+        <h2 className="text-2xl text-center font-bold text-white mb-6">
+          Catch 'em all
+        </h2>
 
-      <div className="flex justify-center mt-12">
-        {nextUrl && (
-          <button
-            onClick={loadMore}
-            disabled={loadingMore}
-            className={`px-8 py-3 rounded-full text-white font-semibold shadow-md transition-all duration-300
-              ${
-                loadingMore
-                  ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700 dark:bg-yellow-500 dark:hover:bg-yellow-600"
-              }`}
-          >
-            {loadingMore ? "Cargando..." : "Cargar más"}
-          </button>
-        )}
+        <div className="pokemon-grid">
+          {pokemonList.map((p) => (
+            <PokemonCard key={p.id || p.name} pokemon={p} />
+          ))}
+        </div>
+
+        <div className="flex justify-center mt-12">
+          {nextUrl && (
+            <button onClick={loadMore} disabled={loadingMore} className="btn">
+              {loadingMore ? "Cargando..." : "Cargar más"}
+            </button>
+          )}
+        </div>
       </div>
     </main>
   );

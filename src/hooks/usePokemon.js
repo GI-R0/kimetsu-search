@@ -1,40 +1,47 @@
 import { useState, useEffect } from "react";
 
 export function usePokemon(name) {
-  // console.log('buscando pokemon:', name);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!name) {
-      setData([]);
-      setError(null);
+    if (!name?.trim()) {
+      setData(null);
       return;
     }
 
-    const fetchPokemon = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    const controller = new AbortController();
 
+    const fetchPokemon = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
         const res = await fetch(
-          `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase().trim()}`
+          `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase().trim()}`,
+          { signal: controller.signal }
         );
 
-        if (!res.ok) throw new Error("Pokemon no encontrado");
+        if (!res.ok) throw new Error("Pokemon not found");
 
         const pokemon = await res.json();
-        setData([pokemon]);
+        setData([pokemon]); // Keeping array format to match existing usage
       } catch (err) {
-        setError(err.message);
-        setData([]);
+        if (err.name !== "AbortError") {
+          setError(err.message);
+          setData(null);
+        }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchPokemon();
+
+    return () => controller.abort();
   }, [name]);
 
   return { data, loading, error };

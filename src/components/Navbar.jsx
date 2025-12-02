@@ -1,33 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTheme } from "../hooks/useTheme";
-import pikachu from "../assets/pikachu.png";
 
 const Navbar = React.memo(() => {
-  const { theme, toggleTheme } = useTheme();
-
   return (
-    <nav className="bg-blue-600 dark:bg-gray-800 text-white shadow-md transition-colors duration-300">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2">
-            <img
-              src={pikachu}
-              alt="Ícono de Pikachu"
-              className="w-8 h-8 drop-shadow-sm"
-              loading="lazy"
-            />
-            <span className="text-xl font-bold tracking-wide">PokeSearch</span>
-          </Link>
+    <nav className="header">
+      <div className="nav-container">
+        <Link to="/" className="nav-logo-link">
+          <span className="nav-logo">POKESEARCH</span>
+        </Link>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={toggleTheme}
-              className="p-3 rounded-full bg-white text-blue-600 dark:bg-gray-700 dark:text-yellow-400 hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-xl border-2 border-blue-300 dark:border-yellow-500"
-            >
-              <span className="text-xl">{theme === "dark" ? "☀️" : "🌙"}</span>
-            </button>
-          </div>
+        <div className="nav-links-container">
+          <Link to="/" className="nav-link">
+            Inicio
+          </Link>
+          <Link to="/search" className="nav-link">
+            Buscar
+          </Link>
+          <Link to="/about" className="nav-link">
+            Acerca
+          </Link>
         </div>
       </div>
     </nav>

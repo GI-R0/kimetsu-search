@@ -2,18 +2,27 @@ import React, { useEffect } from "react";
 
 export default function About() {
   useEffect(() => {
-    document.title = "Acerca de | PokeSearch";
+    document.title = "Acerca de pokesearch";
   }, []);
 
   return (
-    <section className="text-center py-10">
-      <h1 className="text-3xl font-bold mb-4">Acerca de PokeSearch</h1>
-      <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-        Este proyecto educativo utiliza la API pública de Pokémon (PokeAPI) para
-        mostrar información sobre tus Pokémon favoritos.
-        <br />
-        Desarrollado 🧩 con React + TailwindCSS.
-      </p>
+    <section className="about-section">
+      <h1 className="about-title">Acerca de PokeSearch</h1>
+      <div className="about-content">
+        <p className="about-text">
+          PokeSearch es una aplicación web moderna que te permite explorar el
+          fascinante mundo de Pokémon. Navega por una extensa colección de
+          criaturas, busca tus favoritos por nombre o ID, y descubre información
+          detallada sobre cada uno.
+        </p>
+        <p className="about-text">
+          Este proyecto utiliza la API pública de PokeAPI para obtener datos en
+          tiempo real, ofreciendo una experiencia fluida y actualizada.
+          Desarrollado con React y diseñado con un estilo inspirado en
+          plataformas de streaming modernas.
+        </p>
+        <p className="about-footer">Desarrollado con ❤️ usando React</p>
+      </div>
     </section>
   );
 }

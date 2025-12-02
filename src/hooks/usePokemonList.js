@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export function usePokemonList(
   initialUrl = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0"
@@ -9,41 +9,46 @@ export function usePokemonList(
   const [error, setError] = useState(null);
   const [nextUrl, setNextUrl] = useState(null);
 
-  const fetchPage = async (url, append = false) => {
+  const fetchPokemonDetails = async (results) => {
+    return Promise.all(
+      results.map(async (p) => {
+        const res = await fetch(p.url);
+        if (!res.ok) throw new Error(`Error loading ${p.name}`);
+        return res.json();
+      })
+    );
+  };
+
+  const fetchPage = useCallback(async (url, isLoadMore = false) => {
     try {
-      append ? setLoadingMore(true) : setLoading(true);
+      isLoadMore ? setLoadingMore(true) : setLoading(true);
       setError(null);
 
       const response = await fetch(url);
-      if (!response.ok) throw new Error("Error al cargar los Pokemon");
+      if (!response.ok) throw new Error("Failed to fetch pokemon list");
+
       const data = await response.json();
+      setNextUrl(data.next);
 
-      setNextUrl(data.next || null);
+      const detailedData = await fetchPokemonDetails(data.results || []);
 
-      const detailed = await Promise.all(
-        (data.results || []).map(async (pokemon) => {
-          const resDetail = await fetch(pokemon.url);
-          if (!resDetail.ok) throw new Error("Error al cargar detalles");
-          return resDetail.json();
-        })
+      setPokemonList((prev) =>
+        isLoadMore ? [...prev, ...detailedData] : detailedData
       );
-
-      setPokemonList((prev) => (append ? [...prev, ...detailed] : detailed));
     } catch (err) {
       setError(err.message);
-      if (!append) setPokemonList([]);
     } finally {
-      append ? setLoadingMore(false) : setLoading(false);
+      isLoadMore ? setLoadingMore(false) : setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchPage(initialUrl);
+  }, [initialUrl, fetchPage]);
 
   const loadMore = () => {
     if (nextUrl && !loadingMore) fetchPage(nextUrl, true);
   };
-
-  useEffect(() => {
-    fetchPage(initialUrl, false);
-  }, [initialUrl]);
 
   return { pokemonList, loading, loadingMore, error, nextUrl, loadMore };
 }

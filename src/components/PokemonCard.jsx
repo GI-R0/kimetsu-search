@@ -1,76 +1,27 @@
-import React from "react";
+import React, { memo } from "react";
 import { capitalize } from "../utils/formatText";
-import Loader from "./Loader";
 
-const PokemonCard = React.memo(({ pokemon }) => {
-  const [details, setDetails] = React.useState(null);
-  const [error, setError] = React.useState(false);
+const PokemonCard = memo(({ pokemon }) => {
+  if (!pokemon) return null;
 
-  React.useEffect(() => {
-    async function fetchDetails() {
-      try {
-        const res = await fetch(
-          pokemon.url || `https://pokeapi.co/api/v2/pokemon/${pokemon.name}`
-        );
-        if (!res.ok) throw new Error("Error al cargar");
-        const data = await res.json();
-        setDetails(data);
-      } catch {
-        setError(true);
-      }
-    }
-
-    if (pokemon.id && pokemon.sprites) {
-      setDetails(pokemon);
-    } else {
-      fetchDetails();
-    }
-  }, [pokemon]);
-
-  if (error) {
-    return (
-      <div
-        className="border border-red-500 p-4 rounded-xl bg-white dark:bg-red-800 text-red-500 dark:text-white font-medium text-center"
-        role="alert"
-        aria-live="assertive"
-      >
-        ❌ Este Pokémon no quiere aparecer
-      </div>
-    );
-  }
-
-  if (!details) return <Loader />;
+  const { name, sprites, types } = pokemon;
+  const image = sprites?.front_default || "/fallback-pokemon.png";
 
   return (
     <div
-      className="border border-gray-200 p-4 rounded-xl shadow-lg flex flex-col items-center bg-white dark:bg-gray-800 text-gray-800 dark:text-white hover:shadow-2xl transition duration-300 transform hover:scale-[1.02]"
+      className="pokemon-card"
       role="region"
-      aria-label={`Tarjeta de ${capitalize(details.name)}`}
+      aria-label={`Poster de ${capitalize(name)}`}
     >
-      <img
-        src={details.sprites?.front_default || "/fallback-pokemon.png"}
-        alt={`Imagen de ${capitalize(details.name) || "Pokémon desconocido"}`}
-        className="w-20 h-20 mb-3 drop-shadow-md"
-        loading="lazy"
-      />
+      <img src={image} alt={name} loading="lazy" />
 
-      <h2 className="text-lg font-bold mb-1 text-center">
-        {capitalize(details.name)}
-      </h2>
-
-      <p className="text-gray-600 dark:text-gray-400 mb-2 text-center">
-        ID: {details.id}
-      </p>
-
-      <div className="flex gap-2 justify-center flex-wrap">
-        {details.types?.map((t) => (
-          <span
-            key={t.type.name}
-            className="px-2 py-1 text-xs rounded-full font-semibold bg-blue-100 text-blue-600 dark:bg-blue-700 dark:text-blue-100"
-          >
-            {capitalize(t.type.name)}
-          </span>
-        ))}
+      <div className="card-overlay">
+        <h2 className="card-title">{name}</h2>
+        <div className="card-types">
+          {types?.map((t) => (
+            <span key={t.type.name}>{capitalize(t.type.name)}</span>
+          ))}
+        </div>
       </div>
     </div>
   );
