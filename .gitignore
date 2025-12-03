@@ -48,6 +48,7 @@ Desktop.ini
 *.tmp
 *.temp
 .cache
+.unlighthouse
 
 # Package manager lock files (opcional, descomentar si no quieres versionar)
 # package-lock.json
