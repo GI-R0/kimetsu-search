@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { usePokemon } from "../hooks/usePokemon";
 import Loader from "../components/Loader";
 import PokemonCard from "../components/PokemonCard";
@@ -8,7 +8,6 @@ export default function Search() {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors, isSubmitting },
     reset,
     setValue,
@@ -25,8 +24,6 @@ export default function Search() {
   const [pokemonName, setPokemonName] = useState("");
   const [searchHistory, setSearchHistory] = useState([]);
   const { data: results, loading, error } = usePokemon(pokemonName);
-
-  const watchSearchType = useWatch({ control, name: "searchType" });
 
   useEffect(() => {
     document.title = "Buscar Pokémon | PokeSearch";
