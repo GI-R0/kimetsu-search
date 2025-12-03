@@ -216,7 +216,7 @@ body {
 .pokemon-card img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Pokemon sprites are usually small, contain works better than cover */
+  object-fit: contain;
   padding: 20px;
   background: radial-gradient(
     circle,
